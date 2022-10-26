@@ -3,7 +3,7 @@ import time
 import sys
 from  _thread import *
 
-def proxy_server(webserver, port, conn, addr, message):
+def proxy_server(webserver, port, client, addr, message):
     try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.connect((webserver, port))
@@ -12,7 +12,7 @@ def proxy_server(webserver, port, conn, addr, message):
             reply = server.recv(1024)
 
             if len(reply) > 0:
-                conn.sendall(reply)
+                client.sendall(reply)
                 print(f' Request done: {addr[0]}, {webserver}')
             else:
                 break
