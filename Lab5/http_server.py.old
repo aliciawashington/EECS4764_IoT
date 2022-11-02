@@ -1,0 +1,75 @@
+from machine import Pin
+import socket
+import network
+
+ssid = 'Columbia University' #'Verizon_JSVC7Z'
+password = ''                #'noisy6-hist-pod'
+
+station = network.WLAN(network.STA_IF)
+
+station.active(True)
+station.connect(ssid, password)
+
+while not station.isconnected():
+    pass
+
+print('Connection successful')
+print(station.ifconfig())
+
+host = ''
+port = 80
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((host, port))
+server.listen()
+
+while True:
+    client, addr = server.accept()
+    print('client connected from', addr)
+    # Get the client request
+    message = client.recv(1024)
+    print(message)
+    
+    getreq = message.splitlines()[0]
+    print(getreq)
+
+    url = getreq.split('')[1]
+    print(str.encode(url))
+
+    lhttp_pos = url.find("://")
+    if (lhttp_pos == -1):
+        ltemp = url
+    else:
+        ltemp = url[(lhttp_pos + 3):]
+    lport_pos = ltemp.find(":")
+    lwebserver_pos = ltemp.find("/")
+    if lwebserver_pos == -1:
+        lwebserver_pos = len(ltemp)
+        webserver = ""
+        port = -1
+        if (lport_pos == -1 or lwebserver_pos < lport_pos):
+            port = 80
+            webserver = ltemp[:lwebserver_pos]
+        else:
+            port = int((ltemp[(lport_pos + 1):])[:lwebserver_pos - lport_pos - 1])
+            webserver = ltemp[:lport_pos]
+
+    filename = message.split()[1].partition("/")[2]
+    print(f'Filename: {filename}')
+
+    host_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print("Hostname: "+webserver)
+    host_sock.connect((webserver, 80))
+
+    fileobj = host_sock.makefile('r', 0)
+    fileobj.write("GET" + "http://" + filename + "HTTP/1.1\n\n")
+    buffer = fileobj.readlines()
+    for line in buffer:
+        cli_sock.send(str.encode(line))
+
+    # response = 
+    client.send('HTTP/1.0 200 OK\r\nContent-Type: text/html\r\n\r\n')
+    client.sendall(response)
+    client.close()
+
+# Close server socket
+server.close()
