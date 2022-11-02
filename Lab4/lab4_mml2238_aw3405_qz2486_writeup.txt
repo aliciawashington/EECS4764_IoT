@@ -1,0 +1,4 @@
+SPI stands for serial peripheral interface.
+This protocal allows for communication between two devices, a server and a client 
+(formerly master and slave) over short distances. SPI allows for full duplex communication
+which means messages can be sent concurrently in both directions.
