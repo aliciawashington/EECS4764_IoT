@@ -1,5 +1,4 @@
 from machine import RTC, Pin, PWM, I2C, ADC, SPI
-#import machine
 import time
 import utime
 import ssd1306
@@ -31,28 +30,18 @@ cs.value(1)
 
 rtc = machine.RTC()
 rtc.datetime() # get date and time
-dt = [2022, 10 ,5, 3, 15, 33, 0, 0]
-rtc.datetime(dt)
 i2c = machine.I2C(sda=machine.Pin(4), scl=machine.Pin(5), freq=100000)
 display = ssd1306.SSD1306_I2C(128, 32, i2c)
-#x_old = 0
-#y_old = 0
 x_pos = 0
 y_pos = 0   
 
 while True:
     cs.value(0)
-    #hspi.write(b'\xb3')
     buf = bytearray(5)
     hspi.readinto(buf, 0xF2)
     cs.value(1)
-    #time.sleep_ms(50)
-    #cs.value(0)
-    #hspi.write(b'\xb4')
-    #x2 = hspi.read(1)
     x = int.from_bytes(buf[0:1], "big")
     y = int.from_bytes(buf[2:3], "big")
-    #z = int.from_bytes(buf[4:5], "big")
     
     x_clean = 0
     y_clean = 0
@@ -66,10 +55,6 @@ while True:
     else:
         y_clean = y * -1
         
-    #x_clean = (x_clean+8) % 16 
-    #y_clean = (y_clean+8) % 16
-    #x_pos = x_clean<<1
-    #y_pos = y_clean<<2
     
     x_pos = x_pos + x_clean
     y_pos = y_pos + y_clean
