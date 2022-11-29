@@ -2,3 +2,17 @@
 *.cer
 *.log
 *.zip
+Project/prj_server/.venv/
+
+Project/prj_server/*.pyc
+Project/prj_server/__pycache__/
+
+Project/prj_server/instance/
+
+Project/prj_server/.pytest_cache/
+Project/prj_server/.coverage
+Project/prj_server/htmlcov/
+
+Project/prj_server/dist/
+Project/prj_server/build/
+Project/prj_server/*.egg-info/
