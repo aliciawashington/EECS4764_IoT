@@ -1,0 +1,4 @@
+API_KEY = "aw3405"
+MAC_ADDRESS = "40:91:51:4e:f7:6c" 
+MACHINE_NAME = "machine1"
+
