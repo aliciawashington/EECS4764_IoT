@@ -46,9 +46,15 @@ def update():
         "SELECT machine_name, field, data_point, created, MAX(rowid) FROM machine_stats"
         ).fetchone()
 
+    # TODO: DB operation for grabbing the newest rows and then 
+
     templateData = {
             "data": last_data_pt["data_point"],
             "time_stamp": datetimeString
         }
 
     return render_template("machine/update.html", **templateData)
+
+def get_new_rows(db):
+    
+
